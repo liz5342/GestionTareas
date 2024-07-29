@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación de Gestión de Tareas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Gestión de Tareas</h1>
+        <form action="/add" method="POST">
+            <input type="text" name="title" placeholder="Título de la Tarea" required>
+            <input type="text" name="description" placeholder="Descripción de la Tarea">
+            <input type="text" name="category" placeholder="Categoría" required>
+            <input type="date" name="due_date" required>
+            <button type="submit">Agregar Tarea</button>
+        </form>
+        <ul>
+            {% for task in tasks %}
+            <li>
+                <form action="/edit/{{ task.id }}" method="POST">
+                    <input type="text" name="title" value="{{ task.title }}" required>
+                    <input type="text" name="description" value="{{ task.description }}">
+                    <input type="text" name="category" value="{{ task.category }}" required>
+                    <input type="date" name="due_date" value="{{ task.due_date }}" required>
+                    <input type="checkbox" name="completed" {% if task.completed %}checked{% endif %}>
+                    <button type="submit">Actualizar</button>
+                    <a href="/delete/{{ task.id }}">Eliminar</a>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>
